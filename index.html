@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>单词复习测试</title>
+<style>
+:root {
+  --primary-color: #4e73df;
+  --secondary-color: #6c757d;
+  --success-color: #1cc88a;
+  --danger-color: #e74a3b;
+  --warning-color: #f6c23e;
+  --info-color: #36b9cc;
+  --light-bg: #f8f9fc;
+  --card-bg: #ffffff;
+  --text-primary: #5a5c69;
+  --text-secondary: #858796;
+  --border-color: #e3e6f0;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Nunito', 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+
+.container {
+  background: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 600px;
+  overflow: hidden;
+}
+
+.header {
+  background: var(--primary-color);
+  color: white;
+  padding: 20px;
+  text-align: center;
+  border-radius: 12px 12px 0 0;
+}
+
+.header h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.content {
+  padding: 25px;
+}
+
+.input-section {
+  margin-bottom: 25px;
+}
+
+textarea {
+  width: 100%;
+  height: 180px;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  resize: vertical;
+  font-size: 15px;
+  margin-bottom: 20px;
+  transition: border-color 0.3s;
+  font-family: inherit;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.15);
+}
+
+.btn {
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  transition: all 0.2s;
+  display: inline-block;
+  text-align: center;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+  width: 100%;
+}
+
+.btn-primary:hover {
+  background-color: #3a59c7;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-secondary {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+.btn-success {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #17a673;
+}
+
+.btn-danger {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #d52a1a;
+}
+
+.btn-warning {
+  background-color: var(--warning-color);
+  color: #3a3b45;
+}
+
+.btn-warning:hover {
+  background-color: #f4b619;
+}
+
+.test-area {
+  display: none;
+  width: 100%;
+}
+
+.progress-container {
+  margin-bottom: 20px;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 12px;
+  background: #eaecf4;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--primary-color);
+  width: 0%;
+  transition: width 0.4s ease;
+  border-radius: 10px;
+}
+
+.question-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  padding: 25px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border-color);
+}
+
+.question {
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: var(--text-primary);
+  text-align: center;
+  padding: 10px;
+}
+
+.options {
+  display: grid;
+  grid-gap: 12px;
+  margin-bottom: 20px;
+}
+
+.option-btn {
+  padding: 15px;
+  text-align: left;
+  background: #f8f9fc;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 15px;
+}
+
+.option-btn:hover {
+  background: #eaecf4;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.option-btn.correct {
+  background: #d1e7dd;
+  border-color: #badbcc;
+  color: #0f5132;
+}
+
+.option-btn.wrong {
+  background: #f8d7da;
+  border-color: #f5c2c7;
+  color: #842029;
+}
+
+.result {
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.result.correct {
+  background: #d1e7dd;
+  color: #0f5132;
+}
+
+.result.wrong {
+  background: #f8d7da;
+  color: #842029;
+}
+
+.control-btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.score-container {
+  text-align: center;
+  padding: 15px;
+  background: #f8f9fc;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.wrong-list-container {
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px dashed var(--border-color);
+}
+
+.wrong-list-title {
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wrong-item {
+  padding: 12px 15px;
+  background: #f8f9fc;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  border-left: 4px solid var(--danger-color);
+}
+
+.wrong-word {
+  font-weight: 700;
+  color: var(--danger-color);
+  margin-bottom: 5px;
+}
+
+.wrong-meaning {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.export-btn {
+  margin-top: 15px;
+  width: 100%;
+}
+
+@media (max-width: 576px) {
+  .container {
+    border-radius: 10px;
+  }
+  
+  .content {
+    padding: 20px;
+  }
+  
+  .question {
+    font-size: 18px;
+  }
+  
+  .control-btns {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>单词复习测试</h1>
+    <p>通过测试巩固单词记忆</p>
+  </div>
+  
+  <div class="content">
+    <div class="input-section">
+      <textarea id="wordInput" placeholder="请粘贴单词列表，格式为：单词 + 释义（用逗号、制表符或空格分隔）
+例如：
+inquire 询问,打听;调查,查究
+intrusion 闯入,侵入;侵扰,干扰
+intuitive 直觉的"></textarea>
+      <button class="btn btn-primary" onclick="startTest()">开始测试</button>
+    </div>
+    
+    <div id="testArea" class="test-area">
+      <div class="progress-container">
+        <div class="progress-info">
+          <span id="progressText">题目 1 / 10</span>
+          <span id="scoreText">正确: 0</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-bar-fill" id="progressBar"></div>
+        </div>
+      </div>
+      
+      <div class="question-card">
+        <div class="question" id="question">单词：inquire</div>
+        <div class="options" id="options">
+          <!-- 选项将通过JS动态添加 -->
+        </div>
+        <div class="result" id="result"></div>
+      </div>
+      
+      <div class="control-btns">
+        <button class="btn btn-secondary" id="prevBtn" onclick="prevQuestion()">上一题</button>
+        <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" style="display:none;">下一题</button>
+        <button class="btn btn-warning" id="addWrongBtn" onclick="addWrong()">加入错题本</button>
+      </div>
+      
+      <div id="score" class="score-container"></div>
+      
+      <div class="wrong-list-container">
+        <div class="wrong-list-title">
+          <span>错题本</span>
+          <span id="wrongCount">0个错题</span>
+        </div>
+        <div id="wrongList"></div>
+        <button class="btn btn-danger export-btn" id="exportBtn" onclick="exportWrong()" style="display:none;">导出错题</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let words = [], questions = [], current = 0, correct = 0, wrongs = [], answered = [];
+
+function startTest() {
+  const input = document.getElementById("wordInput").value.trim();
+  if (!input) { 
+    alert("请输入单词列表"); 
+    return; 
+  }
+  
+  const lines = input.split(/\r?\n/).filter(l => l.trim() !== "");
+  words = []; 
+  wrongs = []; 
+  answered = [];
+  document.getElementById("wrongList").innerHTML = "";
+  document.getElementById("exportBtn").style.display = "none";
+  document.getElementById("wrongCount").innerText = "0个错题";
+  
+  lines.forEach(line => {
+    // 支持多种分隔符：逗号、制表符、空格
+    const match = line.match(/^([^,\t\s]+)[,\t\s]+([\s\S]+)$/);
+    if (match) {
+      words.push({ 
+        word: match[1].trim(), 
+        meaning: match[2].trim().replace(/^[,\s]+|[,\s]+$/g, '') // 清理释义两端的标点
+      });
+    }
+  });
+  
+  if (words.length < 2) { 
+    alert("至少需要两个单词"); 
+    return; 
+  }
+  
+  questions = shuffle([...words]);
+  current = 0; 
+  correct = 0;
+  document.getElementById("testArea").style.display = "block";
+  document.getElementById("scoreText").innerText = `正确: ${correct}`;
+  renderQuestion();
+}
+
+function renderQuestion() {
+  document.getElementById("result").innerText = "";
+  document.getElementById("result").className = "result";
+  document.getElementById("nextBtn").style.display = "none";
+  
+  const q = questions[current];
+  document.getElementById("progressText").innerText = `题目 ${current + 1} / ${questions.length}`;
+  document.getElementById("progressBar").style.width = `${((current + 1) / questions.length * 100)}%`;
+  document.getElementById("question").innerText = `单词：${q.word}`;
+  
+  let options = [q.meaning];
+  while (options.length < 4) {
+    const rand = words[Math.floor(Math.random() * words.length)].meaning;
+    if (!options.includes(rand)) options.push(rand);
+  }
+  
+  options = shuffle(options);
+  const optionsDiv = document.getElementById("options");
+  optionsDiv.innerHTML = "";
+  
+  options.forEach(opt => {
+    const btn = document.createElement("button");
+    btn.className = "option-btn";
+    btn.innerText = opt;
+    btn.onclick = () => checkAnswer(btn, opt);
+    optionsDiv.appendChild(btn);
+  });
+  
+  // 如果已经回答过，显示之前的选择
+  if (answered[current]) {
+    answered[current].forEach(a => {
+      const btns = document.getElementById("options").children;
+      btns[a.index].className = `option-btn ${a.className}`;
+    });
+    document.getElementById("nextBtn").style.display = "inline-block";
+  }
+  
+  // 更新上一题按钮状态
+  document.getElementById("prevBtn").style.display = current > 0 ? "inline-block" : "none";
+}
+
+function nextQuestion() { 
+  if (current < questions.length - 1) {
+    current++;
+    renderQuestion();
+  } else {
+    finishTest();
+  } 
+}
+
+function prevQuestion() { 
+  if (current > 0) {
+    current--;
+    renderQuestion();
+  } 
+}
+
+function checkAnswer(btn, selected) {
+  const q = questions[current];
+  const buttons = document.getElementById("options").children;
+  let answerState = [];
+  
+  if (selected === q.meaning) {
+    btn.classList.add("correct");
+    correct++;
+    document.getElementById("scoreText").innerText = `正确: ${correct}`;
+    
+    answerState.push({
+      index: Array.from(buttons).indexOf(btn),
+      className: "correct",
+      correct: true
+    });
+    
+    answered[current] = answerState;
+    document.getElementById("result").innerText = "✅ 回答正确！";
+    document.getElementById("result").className = "result correct";
+    
+    setTimeout(() => {
+      if (current < questions.length - 1) {
+        current++;
+        renderQuestion();
+      } else {
+        finishTest();
+      }
+    }, 200);
+  } else {
+    btn.classList.add("wrong");
+    answerState.push({
+      index: Array.from(buttons).indexOf(btn),
+      className: "wrong",
+      correct: false
+    });
+    
+    for (let b of buttons) { 
+      if (b.innerText === q.meaning) {
+        b.classList.add("correct"); 
+        answerState.push({
+          index: Array.from(buttons).indexOf(b),
+          className: "correct",
+          correct: true
+        });
+      } 
+    }
+    
+    answered[current] = answerState;
+    document.getElementById("result").innerText = "❌ 回答错误";
+    document.getElementById("result").className = "result wrong";
+    document.getElementById("nextBtn").style.display = "inline-block";
+    
+    if (!wrongs.find(w => w.word === q.word)) {
+      wrongs.push(q); 
+      updateWrongList();
+    }
+  }
+}
+
+function addWrong() { 
+  const q = questions[current]; 
+  if (!wrongs.find(w => w.word === q.word)) {
+    wrongs.push(q); 
+    updateWrongList();
+    
+    document.getElementById("result").innerText = "已添加到错题本";
+    document.getElementById("result").className = "result";
+  } 
+}
+
+function updateWrongList() {
+  if (wrongs.length > 0) {
+    let wrongListHTML = "";
+    wrongs.forEach(w => {
+      wrongListHTML += `
+        <div class="wrong-item">
+          <div class="wrong-word">${w.word}</div>
+          <div class="wrong-meaning">${w.meaning}</div>
+        </div>
+      `;
+    });
+    
+    document.getElementById("wrongList").innerHTML = wrongListHTML;
+    document.getElementById("exportBtn").style.display = "block";
+    document.getElementById("wrongCount").innerText = `${wrongs.length}个错题`;
+  }
+}
+
+function finishTest() {
+  document.getElementById("question").innerText = "测试结束！";
+  document.getElementById("options").innerHTML = "";
+  
+  const scorePercent = (correct / questions.length * 100).toFixed(1);
+  document.getElementById("score").innerHTML = `
+    <div>正确: ${correct} / ${questions.length}</div>
+    <div>正确率: ${scorePercent}%</div>
+  `;
+  
+  updateWrongList();
+}
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function exportWrong() {
+  const content = wrongs.map(w => `${w.word}\t${w.meaning}`).join('\n');
+  const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; 
+  a.download = "错题本.txt"; 
+  a.click();
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
